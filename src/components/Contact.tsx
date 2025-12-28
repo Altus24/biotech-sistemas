@@ -29,10 +29,10 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { icon: MessageCircle, label: 'WhatsApp', href: '#' },
-  { icon: Instagram, label: 'Instagram', href: '#' },
-  { icon: Facebook, label: 'Facebook', href: '#' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
+  { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/5491155558888' },
+  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/labequip' },
+  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/labequip' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/labequip' },
 ];
 
 export function Contact() {
