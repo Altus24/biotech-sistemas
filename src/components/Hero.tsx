@@ -2,6 +2,14 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Award, Truck, Headphones } from 'lucide-react';
 import heroImage from '@/assets/hero-lab.jpg';
 
+const scrollToSection = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+};
+
+const openWhatsApp = (message: string) => {
+  window.open(`https://wa.me/5491155558888?text=${encodeURIComponent(message)}`, '_blank');
+};
+
 export function Hero() {
   return (
     <section
@@ -41,11 +49,11 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            <Button variant="hero" size="xl" className="group">
+            <Button variant="hero" size="xl" className="group" onClick={() => scrollToSection('catalogo')}>
               Ver Catálogo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="heroOutline" size="xl">
+            <Button variant="heroOutline" size="xl" onClick={() => openWhatsApp('Hola, me gustaría recibir asesoramiento sobre equipos de laboratorio.')}>
               Contactar Asesor
             </Button>
           </div>

@@ -70,7 +70,11 @@ export function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
-          <Button variant={isScrolled ? 'default' : 'heroOutline'} size="lg">
+          <Button 
+            variant={isScrolled ? 'default' : 'heroOutline'} 
+            size="lg"
+            onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             Cotizar Ahora
           </Button>
         </div>
@@ -107,7 +111,14 @@ export function Navbar() {
             </li>
           ))}
           <li className="pt-4 border-t border-border">
-            <Button variant="default" className="w-full">
+            <Button 
+              variant="default" 
+              className="w-full"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
               Cotizar Ahora
             </Button>
           </li>

@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Info, Tag, Sparkles } from 'lucide-react';
+import { ShoppingCart, Info, Tag, Sparkles, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 // Import product images
 import centrifugaImg from '@/assets/products/centrifuga.jpg';
@@ -99,7 +102,27 @@ const getBadgeConfig = (badge: Product['badge']) => {
   }
 };
 
+const openWhatsApp = (product: Product) => {
+  const message = `Hola, me interesa el producto: ${product.name} (${product.brand}) - ${formatPrice(product.price)}. ¿Podrían darme más información?`;
+  window.open(`https://wa.me/5491155558888?text=${encodeURIComponent(message)}`, '_blank');
+};
+
 export function ProductCatalog() {
+  const { toast } = useToast();
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const handleConsultar = (product: Product) => {
+    openWhatsApp(product);
+    toast({
+      title: '¡Redirigiendo a WhatsApp!',
+      description: `Consulta sobre ${product.name}`,
+    });
+  };
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="catalogo" className="py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -173,11 +196,11 @@ export function ProductCatalog() {
 
                   {/* Actions */}
                   <div className="flex gap-3">
-                    <Button variant="default" className="flex-1">
+                    <Button variant="default" className="flex-1" onClick={() => handleConsultar(product)}>
                       <ShoppingCart className="w-4 h-4" />
                       Consultar
                     </Button>
-                    <Button variant="outline" size="icon" className="shrink-0">
+                    <Button variant="outline" size="icon" className="shrink-0" onClick={() => setSelectedProduct(product)}>
                       <Info className="w-4 h-4" />
                     </Button>
                   </div>
@@ -189,12 +212,58 @@ export function ProductCatalog() {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="group">
+          <Button variant="outline" size="lg" className="group" onClick={() => scrollToSection('contacto')}>
             <Tag className="w-5 h-5" />
             Ver Catálogo Completo
           </Button>
         </div>
       </div>
+
+      {/* Product Detail Modal */}
+      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+        <DialogContent className="max-w-lg">
+          {selectedProduct && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-xl">{selectedProduct.name}</DialogTitle>
+                <DialogDescription>{selectedProduct.brand}</DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4">
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <div>
+                  <h4 className="font-semibold mb-2">Características:</h4>
+                  <ul className="space-y-1">
+                    {selectedProduct.features.map((feature, i) => (
+                      <li key={i} className="text-sm text-muted-foreground flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-2xl font-bold text-foreground">
+                    {formatPrice(selectedProduct.price)}
+                  </span>
+                  {selectedProduct.originalPrice && (
+                    <span className="text-sm text-muted-foreground line-through">
+                      {formatPrice(selectedProduct.originalPrice)}
+                    </span>
+                  )}
+                </div>
+                <Button className="w-full" onClick={() => handleConsultar(selectedProduct)}>
+                  <ShoppingCart className="w-4 h-4" />
+                  Consultar por WhatsApp
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

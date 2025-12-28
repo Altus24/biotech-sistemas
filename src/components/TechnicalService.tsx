@@ -1,5 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Wrench, Settings, CheckCircle, Shield, Zap, Clock, Phone, ArrowRight } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+const openWhatsApp = (message: string) => {
+  window.open(`https://wa.me/5491155559999?text=${encodeURIComponent(message)}`, '_blank');
+};
 
 const services = [
   {
@@ -34,6 +39,24 @@ const benefits = [
 ];
 
 export function TechnicalService() {
+  const { toast } = useToast();
+
+  const handleSolicitarPresupuesto = () => {
+    openWhatsApp('Hola, me gustaría solicitar un presupuesto para servicio técnico de equipos de laboratorio.');
+    toast({
+      title: '¡Redirigiendo a WhatsApp!',
+      description: 'Solicitud de presupuesto de servicio técnico',
+    });
+  };
+
+  const handleAgendarVisita = () => {
+    openWhatsApp('Hola, me gustaría agendar una visita técnica para revisión de equipos de laboratorio.');
+    toast({
+      title: '¡Redirigiendo a WhatsApp!',
+      description: 'Solicitud para agendar visita técnica',
+    });
+  };
+
   return (
     <section id="servicio" className="py-24 gradient-hero relative overflow-hidden">
       {/* Decorative elements */}
@@ -104,11 +127,11 @@ export function TechnicalService() {
               Nuestro equipo está disponible para atenderte.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="hero" size="lg" className="flex-1 group">
+              <Button variant="hero" size="lg" className="flex-1 group" onClick={handleSolicitarPresupuesto}>
                 Solicitar Presupuesto
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="heroOutline" size="lg" className="flex-1">
+              <Button variant="heroOutline" size="lg" className="flex-1" onClick={handleAgendarVisita}>
                 <Clock className="w-5 h-5" />
                 Agendar Visita
               </Button>
