@@ -32,26 +32,26 @@ export function Navbar() {
     >
       {/* Top bar */}
       <div className={`border-b border-border/30 transition-all duration-300 ${isScrolled ? 'hidden' : 'block'}`}>
-        <div className="container mx-auto px-4 py-2 flex justify-end gap-6 text-sm">
-          <a href="tel:+5491155558888" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-            <Phone className="w-4 h-4" />
-            <span>+54 11 5555-8888</span>
+        <div className="container mx-auto px-4 py-2 flex flex-col sm:flex-row justify-center sm:justify-end gap-2 sm:gap-6 text-xs sm:text-sm">
+          <a href="tel:+5492612646209" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors justify-center sm:justify-start">
+            <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>+54 9 261 264 6209</span>
           </a>
-          <a href="mailto:info@labequip.com" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-            <Mail className="w-4 h-4" />
-            <span>info@labequip.com</span>
+          <a href="mailto:Biotech-systemas@proton.me" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors justify-center sm:justify-start">
+            <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>Biotech-systemas@proton.me</span>
           </a>
         </div>
       </div>
 
       {/* Main nav */}
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="#inicio" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-xl">L</span>
+      <nav className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+        <a href="#inicio" className="flex items-center gap-2 md:gap-3">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg gradient-primary flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-lg md:text-xl">L</span>
           </div>
-          <span className={`text-xl font-bold transition-colors ${isScrolled ? 'text-foreground' : 'text-primary-foreground'}`}>
-            LabEquip
+          <span className={`text-lg md:text-xl font-bold transition-colors ${isScrolled ? 'text-foreground' : 'text-primary-foreground'}`}>
+            Biotech Systemas
           </span>
         </a>
 
@@ -98,12 +98,12 @@ export function Navbar() {
           isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
       >
-        <ul className="container mx-auto px-4 py-4 flex flex-col gap-4">
+        <ul className="container mx-auto px-4 py-6 flex flex-col gap-3">
           {navItems.map((item) => (
             <li key={item.label}>
               <a
                 href={item.href}
-                className="block py-2 text-foreground/80 hover:text-primary transition-colors"
+                className="block py-3 text-foreground/80 hover:text-primary transition-colors text-base"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
@@ -111,9 +111,10 @@ export function Navbar() {
             </li>
           ))}
           <li className="pt-4 border-t border-border">
-            <Button 
-              variant="default" 
-              className="w-full"
+            <Button
+              variant="default"
+              className="w-full mt-2"
+              size="lg"
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });

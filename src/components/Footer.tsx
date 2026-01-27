@@ -37,24 +37,24 @@ export function Footer() {
               <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">L</span>
               </div>
-              <span className="text-xl font-bold">LabEquip</span>
+              <span className="text-xl font-bold">Biotech Systemas</span>
             </div>
             <p className="text-background/70 mb-6 max-w-sm">
               Más de 20 años proveyendo equipamiento de laboratorio de calidad. 
               Soluciones integrales con garantía y soporte técnico especializado.
             </p>
             <div className="space-y-3">
-              <div className="flex items-center gap-3 text-background/70">
+              {/* <div className="flex items-center gap-3 text-background/70">
                 <MapPin className="w-5 h-5 shrink-0" />
                 <span>Av. Corrientes 1234, CABA, Argentina</span>
-              </div>
+              </div> */}
               <div className="flex items-center gap-3 text-background/70">
                 <Phone className="w-5 h-5 shrink-0" />
-                <span>+54 11 5555-8888</span>
+                <span>+54 9 261 264 6209</span>
               </div>
               <div className="flex items-center gap-3 text-background/70">
                 <Mail className="w-5 h-5 shrink-0" />
-                <span>info@labequip.com</span>
+                <span>Biotech-systemas@proton.me</span>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-background/50 text-sm text-center md:text-left">
-            © {new Date().getFullYear()} LabEquip. Todos los derechos reservados.
+            © {new Date().getFullYear()} Biotech Systemas. Todos los derechos reservados.
           </p>
           <button
             onClick={scrollToTop}
