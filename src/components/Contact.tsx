@@ -9,30 +9,31 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Dirección',
-    details: ['Av. Corrientes 1234, Piso 5', 'CABA, Buenos Aires', 'Argentina'],
+    details: ['', 'Godoy Cruz, Mendoza', 'Argentina'],
   },
   {
     icon: Phone,
     title: 'Teléfono',
-    details: ['+54 9 261 264 6209', '+54 11 5555-9999 (Servicio Técnico)'],
+    details: ['+54 9 261 264 6209']
   },
   {
     icon: Mail,
     title: 'Email',
-    details: ['Biotech-systemas@proton.me'],
+    details: ['biotech-sistemas@proton.me'],
   },
   {
     icon: Clock,
     title: 'Horario de Atención',
-    details: ['Lunes a Viernes: 9:00 - 18:00', 'Sábados: 9:00 - 13:00'],
+    // details: ['Lunes a Viernes: 9:00 - 18:00', 'Sábados: 9:00 - 13:00'],
+    details: ['Lun-Vie: 9:00 - 18:00'],
   },
 ];
 
 const socialLinks = [
   { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/5492612646209' },
-  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/labequip' },
-  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/labequip' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/labequip' },
+  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/biotech_sistemas' },
+  // { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/labequip' },
+  // { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/labequip' },
 ];
 
 export function Contact() {

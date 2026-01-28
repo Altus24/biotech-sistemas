@@ -44,7 +44,7 @@ export function AboutUs() {
 
             {/* <div className="space-y-4 md:space-y-5 text-muted-foreground mb-8 md:mb-12">
               <p className="text-base md:text-lg text-center">
-                En <strong className="text-foreground">Biotech Systemas</strong> somos especialistas en equipamiento
+                En <strong className="text-foreground">Biotech Sistemas</strong> somos especialistas en equipamiento
                 para laboratorios clínicos, industriales y de investigación. Con más de 20 años de
                 experiencia, nos hemos consolidado como referentes en el sector.
               </p>

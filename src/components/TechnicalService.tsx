@@ -3,7 +3,7 @@ import { Wrench, Settings, CheckCircle, Shield, Zap, Clock, Phone, ArrowRight } 
 import { useToast } from '@/hooks/use-toast';
 
 const openWhatsApp = (message: string) => {
-  window.open(`https://wa.me/5491155559999?text=${encodeURIComponent(message)}`, '_blank');
+  window.open(`https://wa.me/5492612646209?text=${encodeURIComponent(message)}`, '_blank');
 };
 
 const services = [
@@ -119,7 +119,7 @@ export function TechnicalService() {
               </div>
               <div>
                 <p className="text-primary-foreground/70 text-xs md:text-sm">Línea de Servicio Técnico</p>
-                <p className="text-xl md:text-2xl font-bold text-primary-foreground">+54 11 5555-9999</p>
+                <p className="text-xl md:text-2xl font-bold text-primary-foreground">+54 9 261 264 6209</p>
               </div>
             </div>
             <p className="text-primary-foreground/80 mb-4 md:mb-6 text-sm md:text-base">

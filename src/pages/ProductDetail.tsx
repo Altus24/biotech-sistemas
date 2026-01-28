@@ -73,7 +73,7 @@ const products: Product[] = [
       'Adecuado para': 'Reactivos y tampones - Sueros y muestras biológicas - Tubos, frascos y vasos - Medios de cultivos y agar - Reacciones bioquímicas sensible',
                            
     },
-    warranty: '24 meses',
+    warranty: '12 meses',
     // conectividad: '',
     aplicaciones: 'Ideal para incubación controlada de muestras, Calentamiento, disolución y descongelación suave, Aplicaciones químicas (control térmico de reacciones químicas, y calentamiento uniforme, para extracciones, titulaciones y pruebas de estabilidad)',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Maquina muy simple que permite su reparación rapidamente. Menús en perfecto funcionamiento y fácil a usar.',
@@ -96,7 +96,7 @@ const products: Product[] = [
       'Bajo consumo de reactivos y coste operativo moderado': '',
       'Componentes durables, apto para uso clínico/diagnóstico': ' ',
     },
-    warranty: '6 meses',
+    warranty: '12 meses',
     conectividad: 'Salida serie (RS-232) para conexión a Sistemas LIS, Salida para impresora externa y opción de exportar resultados en formatos ASCII/CSV, Verificar en la unidad los puertos físicos y opciones de comunicación antes de integrar',
     aplicaciones: 'Laboratorios de análisis clínicos, clínicas y consultorios médicos, laboratorios veterinarios. Centros de diagnóstico y control de calidad',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Electrónica y módulos ópticos sin fallas, botones y menús en perfecto funcionamiento. Se entrega con manual y cables.',
@@ -120,7 +120,7 @@ const products: Product[] = [
       'Lectura inmediata': '',
       'Se autocalibra': '',
     },
-    warranty: '18 meses',
+    warranty: '12 meses',
     // conectividad: '',
     aplicaciones: 'Ensayos inmunoenzimáticos, Aplicaciones en investigación, Ideal para laboratorios clínicos, hospitales y centros de salud',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Electrónica y y el filtro de 450nm funcionan bien, botones y menús en perfecto funcionamiento. Se entrega con manual y cables.',
@@ -213,7 +213,7 @@ export default function ProductDetail() {
   return (
     <>
       <Helmet>
-        <title>{product.name} - {product.brand} | Biotech Systemas</title>
+        <title>{product.name} - {product.brand} | Biotech Sistemas</title>
         <meta 
           name="description" 
           content={`${product.name} ${product.brand}. ${product.description || ''} Precio: ${formatPrice(product.price)}. Envíos a todo Argentina.`} 

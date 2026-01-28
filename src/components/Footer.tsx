@@ -37,7 +37,7 @@ export function Footer() {
               <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">L</span>
               </div>
-              <span className="text-xl font-bold">Biotech Systemas</span>
+              <span className="text-xl font-bold">Biotech Sistemas</span>
             </div>
             <p className="text-background/70 mb-6 max-w-sm">
               Más de 20 años proveyendo equipamiento de laboratorio de calidad. 
@@ -54,7 +54,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-3 text-background/70">
                 <Mail className="w-5 h-5 shrink-0" />
-                <span>Biotech-systemas@proton.me</span>
+                <span>biotech-sistemas@proton.me</span>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function Footer() {
       <div className="border-t border-background/10">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-background/50 text-sm text-center md:text-left">
-            © {new Date().getFullYear()} Biotech Systemas. Todos los derechos reservados.
+            © {new Date().getFullYear()} Biotech Sistemas. Todos los derechos reservados.
           </p>
           <button
             onClick={scrollToTop}

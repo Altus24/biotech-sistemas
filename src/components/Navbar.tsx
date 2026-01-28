@@ -24,26 +24,11 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? 'bg-card/95 backdrop-blur-md shadow-md'
           : 'bg-transparent'
-      }`}
+        }`}
     >
-      {/* Top bar */}
-      <div className={`border-b border-border/30 transition-all duration-300 ${isScrolled ? 'hidden' : 'block'}`}>
-        <div className="container mx-auto px-4 py-2 flex flex-col sm:flex-row justify-center sm:justify-end gap-2 sm:gap-6 text-xs sm:text-sm">
-          <a href="tel:+5492612646209" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors justify-center sm:justify-start">
-            <Phone className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span>+54 9 261 264 6209</span>
-          </a>
-          <a href="mailto:Biotech-systemas@proton.me" className="flex items-center gap-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors justify-center sm:justify-start">
-            <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span>Biotech-systemas@proton.me</span>
-          </a>
-        </div>
-      </div>
-
       {/* Main nav */}
       <nav className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
         <a href="#inicio" className="flex items-center gap-2 md:gap-3">
@@ -51,7 +36,7 @@ export function Navbar() {
             <span className="text-primary-foreground font-bold text-lg md:text-xl">L</span>
           </div>
           <span className={`text-lg md:text-xl font-bold transition-colors ${isScrolled ? 'text-foreground' : 'text-primary-foreground'}`}>
-            Biotech Systemas
+            Biotech Sistemas
           </span>
         </a>
 
@@ -70,8 +55,8 @@ export function Navbar() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
-          <Button 
-            variant={isScrolled ? 'default' : 'heroOutline'} 
+          <Button
+            variant={isScrolled ? 'default' : 'heroOutline'}
             size="lg"
             onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
           >
@@ -94,9 +79,8 @@ export function Navbar() {
 
       {/* Mobile menu */}
       <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-card shadow-lg transition-all duration-300 ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
+        className={`lg:hidden absolute top-full left-0 right-0 bg-card shadow-lg transition-all duration-300 ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+          }`}
       >
         <ul className="container mx-auto px-4 py-6 flex flex-col gap-3">
           {navItems.map((item) => (
