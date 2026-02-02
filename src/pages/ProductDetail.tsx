@@ -1,10 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ArrowLeft, Check } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Check, Download } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
+import jsPDF from 'jspdf';
 
 // Import product images
 import analizadorImg from '@/assets/products/analisador-de-electrolitos.webp';
@@ -175,12 +177,148 @@ const openWhatsApp = (product: Product) => {
   window.open(`https://wa.me/5492612646209?text=${encodeURIComponent(message)}`, '_blank');
 };
 
+const generateProductPDF = (product: Product) => {
+  const doc = new jsPDF();
+
+  // Configuración inicial
+  let yPosition = 20;
+  const lineHeight = 7;
+  const pageWidth = doc.internal.pageSize.width;
+  const margin = 20;
+
+  // Título principal
+  doc.setFontSize(18);
+  doc.setFont('helvetica', 'bold');
+  doc.text('BIOTECH SISTEMAS', pageWidth / 2, yPosition, { align: 'center' });
+  yPosition += lineHeight * 2;
+
+  doc.setFontSize(14);
+  doc.text('FICHA TÉCNICA DEL PRODUCTO', pageWidth / 2, yPosition, { align: 'center' });
+  yPosition += lineHeight * 3;
+
+  // Nombre del producto
+  doc.setFontSize(16);
+  doc.setFont('helvetica', 'bold');
+  doc.text(product.name, margin, yPosition);
+  yPosition += lineHeight;
+
+  // Marca
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'normal');
+  doc.text(product.brand, margin, yPosition);
+  yPosition += lineHeight * 2;
+
+  // Precio
+  doc.setFont('helvetica', 'bold');
+  doc.text(`Precio: ${formatPrice(product.price)}`, margin, yPosition);
+  yPosition += lineHeight;
+
+  if (product.originalPrice) {
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(150, 150, 150);
+    doc.text(`Precio anterior: ${formatPrice(product.originalPrice)}`, margin, yPosition);
+    doc.setTextColor(0, 0, 0);
+    yPosition += lineHeight;
+  }
+  yPosition += lineHeight;
+
+  // Función auxiliar para agregar secciones
+  const addSection = (title: string, content: string) => {
+    // Verificar si necesitamos una nueva página
+    if (yPosition > 250) {
+      doc.addPage();
+      yPosition = 20;
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text(title.toUpperCase(), margin, yPosition);
+    yPosition += lineHeight;
+
+    // Línea separadora
+    doc.setLineWidth(0.5);
+    doc.line(margin, yPosition, pageWidth - margin, yPosition);
+    yPosition += lineHeight;
+
+    // Contenido
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    const splitContent = doc.splitTextToSize(content, pageWidth - (margin * 2));
+    doc.text(splitContent, margin, yPosition);
+    yPosition += (splitContent.length * lineHeight) + lineHeight;
+  };
+
+  // Descripción
+  if (product.description) {
+    addSection('Descripción', product.description);
+  }
+
+  // Características principales
+  addSection('Características Principales', product.features.map(feature => '• ' + feature).join('\n'));
+
+  // Especificaciones técnicas
+  if (product.specifications) {
+    const specsText = Object.entries(product.specifications)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('\n');
+    addSection('Especificaciones Técnicas', specsText);
+  }
+
+  // Conectividad
+  if (product.conectividad) {
+    addSection('Conectividad', product.conectividad);
+  }
+
+  // Aplicaciones
+  if (product.aplicaciones) {
+    addSection('Aplicaciones', product.aplicaciones);
+  }
+
+  // Estado del equipo
+  if (product.estadoDelEquipo) {
+    addSection('Estado del Equipo', product.estadoDelEquipo);
+  }
+
+  // Mantenimiento
+  if (product.mantenimiento) {
+    addSection('Mantenimiento', product.mantenimiento);
+  }
+
+  // Garantía
+  if (product.warranty) {
+    addSection('Garantía', product.warranty);
+  }
+
+  // Información de contacto (al final)
+  if (yPosition > 220) {
+    doc.addPage();
+    yPosition = 20;
+  }
+
+  yPosition += lineHeight;
+  addSection('Información de Contacto',
+    'Biotech Sistemas\n' +
+    'Email: info@biotechsistemas.com\n' +
+    'Teléfono: +54 9 261 264 6209\n' +
+    'Website: www.biotechsistemas.com\n\n' +
+    `Fecha de generación: ${new Date().toLocaleDateString('es-AR')}`
+  );
+
+  // Descargar el PDF
+  doc.save(`${product.name.replace(/\s+/g, '_')}_ficha_tecnica.pdf`);
+};
+
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
   
   const product = products.find(p => p.id === Number(id));
+
+  // ← NUEVO: fuerza scroll al top al cargar/cambiar el producto
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!product) {
     return (
@@ -233,6 +371,7 @@ export default function ProductDetail() {
               Volver al catálogo
             </Button>
 
+            {/* El resto del JSX queda exactamente igual */}
             <div className="grid lg:grid-cols-2 gap-8 md:gap-12 w-full">
               {/* Imagen */}
               <div className="relative">
@@ -293,21 +432,29 @@ export default function ProductDetail() {
 
                 {/* Botones de acción */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button 
-                    size="lg" 
-                    className="flex-1 text-base md:text-lg" 
+                  <Button
+                    size="lg"
+                    className="flex-1 text-base md:text-lg"
                     onClick={handleConsultar}
                   >
                     <ShoppingCart className="w-5 h-5 mr-2" />
                     Consultar por WhatsApp
                   </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="flex-1 text-base md:text-lg"
+                    onClick={() => generateProductPDF(product)}
+                  >
+                    <Download className="w-5 h-5 mr-2" />
+                    Descargar Ficha Técnica
+                  </Button>
                 </div>
               </div>
             </div>
 
-            {/* Secciones de ancho completo para desktop y tablet */}
+            {/* Secciones de ancho completo (sin cambios) */}
             <div className="mt-8 md:mt-12 space-y-6 md:space-y-8">
-              {/* Especificaciones técnicas */}
               {product.specifications && (
                 <div className="p-4 md:p-6 rounded-lg bg-muted/50 border border-border/50">
                   <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
@@ -338,7 +485,6 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Aplicaciones */}
               {product.aplicaciones && (
                 <div className="p-4 md:p-6 rounded-lg bg-muted/50 border border-border/50">
                   <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
@@ -350,7 +496,6 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Estado del equipo */}
               {product.estadoDelEquipo && (
                 <div className="p-4 md:p-6 rounded-lg bg-muted/50 border border-border/50">
                   <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
@@ -362,7 +507,6 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Mantenimiento */}
               {product.mantenimiento && (
                 <div className="p-4 md:p-6 rounded-lg bg-muted/50 border border-border/50">
                   <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
@@ -374,7 +518,6 @@ export default function ProductDetail() {
                 </div>
               )}
 
-              {/* Garantía */}
               {product.warranty && (
                 <div className="p-4 md:p-6 rounded-lg bg-muted/50 border border-border/50">
                   <p className="text-sm md:text-base text-muted-foreground">

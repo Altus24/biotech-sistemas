@@ -40,8 +40,7 @@ export function Footer() {
               <span className="text-xl font-bold">Biotech Sistemas</span>
             </div>
             <p className="text-background/70 mb-6 max-w-sm">
-              Más de 20 años proveyendo equipamiento de laboratorio de calidad. 
-              Soluciones integrales con garantía y soporte técnico especializado.
+            Sociedad especializada en equipamiento de laboratorio, con soluciones integrales, garantía y servicio técnico especializado.
             </p>
             <div className="space-y-3">
               {/* <div className="flex items-center gap-3 text-background/70">

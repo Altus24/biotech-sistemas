@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageCircle, Instagram, Facebook, Linkedin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const contactInfo = [
@@ -24,7 +24,6 @@ const contactInfo = [
   {
     icon: Clock,
     title: 'Horario de Atención',
-    // details: ['Lunes a Viernes: 9:00 - 18:00', 'Sábados: 9:00 - 13:00'],
     details: ['Lun-Vie: 9:00 - 18:00'],
   },
 ];
@@ -32,8 +31,6 @@ const contactInfo = [
 const socialLinks = [
   { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/5492612646209' },
   { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/biotech_sistemas' },
-  // { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/labequip' },
-  // { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/labequip' },
 ];
 
 export function Contact() {
@@ -48,10 +45,28 @@ export function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Construir el texto del mensaje para WhatsApp
+    const text = `*Consulta desde la web*\n\n` +
+                 `*Nombre:* ${formData.name}\n` +
+                 `*Email:* ${formData.email}\n` +
+                 `${formData.phone ? `*Teléfono:* ${formData.phone}\n` : ''}` +
+                 `*Asunto:* ${formData.subject}\n\n` +
+                 `*Mensaje:*\n${formData.message}`;
+
+    const encodedText = encodeURIComponent(text);
+    const whatsappUrl = `https://wa.me/5492612646209?text=${encodedText}`;
+
+    // Abrir WhatsApp (en móvil abre la app, en desktop abre web.whatsapp.com)
+    window.open(whatsappUrl, '_blank');
+
+    // Notificación opcional
     toast({
-      title: '¡Mensaje enviado!',
-      description: 'Nos pondremos en contacto contigo a la brevedad.',
+      title: 'Abriendo WhatsApp',
+      description: 'Serás redirigido para enviar tu mensaje.',
     });
+
+    // Limpiar el formulario
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
 
@@ -65,15 +80,14 @@ export function Contact() {
         {/* Section header */}
         <div className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-2 px-3 md:px-4 py-2 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-medium mb-3 md:mb-4">
-            <Mail className="w-3 h-3 md:w-4 md:h-4" />
+            <MessageCircle className="w-3 h-3 md:w-4 md:h-4" />
             <span>Contáctanos</span>
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-3 md:mb-4">
             ¿Cómo Podemos Ayudarte?
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
-            Estamos aquí para responder todas tus consultas. Completa el formulario
-            o contáctanos directamente.
+            Completa el formulario y te redirigiremos directamente a WhatsApp para enviar tu consulta.
           </p>
         </div>
 
@@ -108,6 +122,8 @@ export function Contact() {
                   <a
                     key={social.label}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-200"
                     aria-label={social.label}
                   >
@@ -120,7 +136,7 @@ export function Contact() {
 
           {/* Contact Form */}
           <div className="bg-card rounded-3xl p-6 md:p-8 border border-border/50 shadow-lg animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4 md:mb-6">Envíanos un Mensaje</h3>
+            <h3 className="text-xl md:text-2xl font-bold text-foreground mb-4 md:mb-6">Envíanos un Mensaje por WhatsApp</h3>
             <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -198,8 +214,8 @@ export function Contact() {
                 />
               </div>
               <Button type="submit" variant="default" size="lg" className="w-full text-base py-3">
-                <Send className="w-4 h-4 md:w-5 md:h-5" />
-                Enviar Mensaje
+                <MessageCircle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                Enviar por WhatsApp
               </Button>
             </form>
           </div>
