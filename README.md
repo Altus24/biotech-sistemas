@@ -1,3 +1,5 @@
-TO do
+deploy en vercel:
 
-agregar la opcion de descargar pdf de cada producto 
+git add .
+git commit -m "msj"
+git push

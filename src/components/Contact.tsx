@@ -213,10 +213,19 @@ export function Contact() {
                   className="text-base resize-none"
                 />
               </div>
-              <Button type="submit" variant="default" size="lg" className="w-full text-base py-3">
+              <Button
+                type="submit"
+                variant="default"
+                size="lg"
+                className="w-full text-base py-3"
+                aria-describedby="whatsapp-description"
+              >
                 <MessageCircle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Enviar por WhatsApp
               </Button>
+              <p id="whatsapp-description" className="sr-only">
+                Al enviar este formulario, serás redirigido a WhatsApp con tu mensaje pre-llenado
+              </p>
             </form>
           </div>
         </div>

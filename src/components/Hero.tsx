@@ -27,8 +27,8 @@ export function Hero() {
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-1/4 right-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-1/4 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-1/4 right-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl animate-float" aria-hidden="true" />
+      <div className="absolute bottom-1/4 left-10 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} aria-hidden="true" />
 
       {/* Content */}
       <div className="relative container mx-auto px-4 py-20 md:py-32 mt-8 md:mt-16 ">
@@ -92,7 +92,7 @@ export function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-2  left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-primary-foreground/60 animate-bounce">
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-primary-foreground/60 animate-bounce" aria-hidden="true">
         <span className="text-xs md:text-sm">Descubre más</span>
         <div className="w-5 h-8 md:w-6 md:h-10 rounded-full border-2 border-primary-foreground/30 flex items-start justify-center p-1.5 md:p-2">
           <div className="w-1 h-2.5 md:w-1.5 md:h-3 bg-primary-foreground/60 rounded-full animate-pulse" />

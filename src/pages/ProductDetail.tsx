@@ -351,11 +351,58 @@ export default function ProductDetail() {
   return (
     <>
       <Helmet>
+        <html lang="es" />
         <title>{product.name} - {product.brand} | Biotech Sistemas</title>
-        <meta 
-          name="description" 
-          content={`${product.name} ${product.brand}. ${product.description || ''} Precio: ${formatPrice(product.price)}. Envíos a todo Argentina.`} 
+        <meta
+          name="description"
+          content={`${product.name} ${product.brand}. ${product.description || ''} Precio: ${formatPrice(product.price)}. Envíos a todo Argentina.`}
         />
+        <link rel="canonical" href={`https://labequip.com/producto/${product.id}`} />
+
+        {/* Open Graph */}
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={`${product.name} - ${product.brand} | Biotech Sistemas`} />
+        <meta property="og:description" content={`${product.description || ''} Precio: ${formatPrice(product.price)}`} />
+        <meta property="og:url" content={`https://labequip.com/producto/${product.id}`} />
+        <meta property="og:image" content={`https://labequip.com${product.image}`} />
+        <meta property="og:site_name" content="Biotech Sistemas" />
+        <meta property="og:locale" content="es_AR" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.name} - ${product.brand}`} />
+        <meta name="twitter:description" content={`${product.description || ''} Precio: ${formatPrice(product.price)}`} />
+        <meta name="twitter:image" content={`https://labequip.com${product.image}`} />
+
+        {/* Product JSON-LD */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": product.name,
+            "brand": {
+              "@type": "Brand",
+              "name": product.brand
+            },
+            "description": product.description,
+            "image": `https://labequip.com${product.image}`,
+            "offers": {
+              "@type": "Offer",
+              "price": product.price,
+              "priceCurrency": "ARS",
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "Biotech Sistemas"
+              }
+            },
+            "additionalProperty": product.features.map(feature => ({
+              "@type": "PropertyValue",
+              "name": "Característica",
+              "value": feature
+            }))
+          })}
+        </script>
       </Helmet>
       
       <div className="min-h-screen">
