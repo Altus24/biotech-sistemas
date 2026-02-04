@@ -20,7 +20,7 @@ interface Product {
   name: string;
   brand: string;
   price: number;
-  originalPrice?: number;
+  // originalPrice?: number;
   image: string;
   badge?: 'offer' | 'new' | 'used' | ' ';
   features: string[];
@@ -39,7 +39,7 @@ const products: Product[] = [
     name: 'Analisador de electrolitos',
     brand: 'Diestro - modelo 103AP V4',
     price: 2800000,
-    originalPrice: 580000,
+    // originalPrice: 580000,
     image: analizadorImg,
     badge: 'used',
     features: ['Dimensiones : Alto: 27cm, Ancho: 16cm, Profundidad: 21cm', 'Temperatura y humedad de uso : Entre 15º - 30º C, Menos de 80% de humedad', 'Peso : 3,2Kg', 'Voltaje de entrada : 100 - 240 V',' Frecuencia : 50 / 60 Hz', 'Amperaje 0.8A'],
@@ -213,14 +213,14 @@ const generateProductPDF = (product: Product) => {
   doc.text(`Precio: ${formatPrice(product.price)}`, margin, yPosition);
   yPosition += lineHeight;
 
-  if (product.originalPrice) {
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Precio anterior: ${formatPrice(product.originalPrice)}`, margin, yPosition);
-    doc.setTextColor(0, 0, 0);
-    yPosition += lineHeight;
-  }
-  yPosition += lineHeight;
+  // if (product.originalPrice) {
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.setTextColor(150, 150, 150);
+  //   doc.text(`Precio anterior: ${formatPrice(product.originalPrice)}`, margin, yPosition);
+  //   doc.setTextColor(0, 0, 0);
+  //   yPosition += lineHeight;
+  // }
+  // yPosition += lineHeight;
 
   // Función auxiliar para agregar secciones
   const addSection = (title: string, content: string) => {
@@ -455,11 +455,11 @@ export default function ProductDetail() {
                   <span className="text-3xl md:text-4xl font-bold text-foreground">
                     {formatPrice(product.price)}
                   </span>
-                  {product.originalPrice && (
+                  {/* {product.originalPrice && (
                     <span className="text-lg md:text-xl text-muted-foreground line-through">
                       {formatPrice(product.originalPrice)}
                     </span>
-                  )}
+                  )} */}
                 </div>
 
                 {/* Características principales */}

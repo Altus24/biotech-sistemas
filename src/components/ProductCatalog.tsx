@@ -18,7 +18,7 @@ interface Product {
   name: string;
   brand: string;
   price: number;
-  originalPrice?: number;
+  // originalPrice?: number;
   image: string;
   badge?: 'offer' | 'new' | 'used';
   features: string[];
@@ -58,7 +58,7 @@ const products: Product[] = [
     name: 'Lector ELISA',
     brand: 'Metrolab 950',
     price: 250000,
-    originalPrice: 3200000,
+    // originalPrice: 3200000,
     image: elisaImg,
     badge: 'used',
     features: ['Capacidad: Tira de 8 o 12 pocillos', 'Capacidad máxima de cada pocillo: 300µL', 'Filtro de 450nm (⚠️ El unico que tiene ese aparato en venta, se puede pedir otro ⚠️)', 'Dimensiones : Alto:  4,5cm, Ancho:  15cm, Profundidad: 18cm','Temperatura de uso : 15-35°C' , 'Peso: 0.5Kg'],
@@ -209,11 +209,11 @@ export function ProductCatalog() {
                     <span className="text-lg md:text-2xl font-bold text-foreground">
                       {formatPrice(product.price)}
                     </span>
-                    {product.originalPrice && (
+                    {/* {product.originalPrice && (
                       <span className="text-xs md:text-sm text-muted-foreground line-through">
                         {formatPrice(product.originalPrice)}
                       </span>
-                    )}
+                    )} */}
                   </div>
 
                   {/* Actions */}
@@ -280,11 +280,11 @@ export function ProductCatalog() {
                   <span className="text-xl md:text-2xl font-bold text-foreground">
                     {formatPrice(selectedProduct.price)}
                   </span>
-                  {selectedProduct.originalPrice && (
+                  {/* {selectedProduct.originalPrice && (
                     <span className="text-xs md:text-sm text-muted-foreground line-through">
                       {formatPrice(selectedProduct.originalPrice)}
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <Button className="w-full text-sm md:text-base" size="lg" onClick={() => handleConsultar(selectedProduct)}>
                   <ShoppingCart className="w-3 h-3 md:w-4 md:h-4" />

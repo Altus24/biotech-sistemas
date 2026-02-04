@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Phone, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import logoImg from '@/assets/logo.jpg';
 
 const navItems = [
   { label: 'Inicio', href: '#inicio' },
@@ -58,9 +59,11 @@ export function Navbar() {
       {/* Main nav */}
       <nav className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
         <button onClick={() => handleNavClick('#inicio')} className="flex items-center gap-2 md:gap-3">
-          <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg gradient-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg md:text-xl">L</span>
-          </div>
+          <img
+            src={logoImg}
+            alt="Biotech Sistemas Logo"
+            className="w-12 h-12 md:w-20 md:h-20 lg:w-28 lg:h-28 object-contain"
+          />
           <span className={`text-lg md:text-xl font-bold transition-colors ${
             effectiveScrolled ? 'text-foreground' : 'text-primary-foreground'
           }`}>
