@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ArrowLeft, Check, Download } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Check, Download, Upload, FileText } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -31,12 +31,13 @@ interface Product {
   aplicaciones?: string;
   estadoDelEquipo?: string;
   mantenimiento?: string;
+  manualPdfUrl?: string; // URL del PDF manual subido para este producto
 }
 
 const products: Product[] = [
   {
     id: 1,
-    name: 'Analisador de electrolitos',
+    name: 'Analizador de electrolitos',
     brand: 'Diestro - modelo 103AP V4',
     price: 2800000,
     // originalPrice: 580000,
@@ -58,6 +59,7 @@ const products: Product[] = [
     aplicaciones: 'Ideal para laboratorios clínicos, hospitales y centros de diagnóstico. Análisis de electrolitos en muestras de sangre, suero y plasma. Útil para chequeos de rutina, emergencias y seguimiento de pacientes.',
     estadoDelEquipo: 'Equipo en excelente estado, funcionando correctamente. Incluye todos los accesorios originales, manual de usuario y cables de conexión.',
     mantenimiento: 'Los electrodos no requieren mantenimiento especial. Limpieza periódica recomendada según protocolo del fabricante. Calibración automática integrada reduce la necesidad de mantenimiento manual.',
+    manualPdfUrl: '/analizador-electrolitos.pdf',
   },
   {
     id: 2,
@@ -80,6 +82,7 @@ const products: Product[] = [
     aplicaciones: 'Ideal para incubación controlada de muestras, Calentamiento, disolución y descongelación suave, Aplicaciones químicas (control térmico de reacciones químicas, y calentamiento uniforme, para extracciones, titulaciones y pruebas de estabilidad)',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Maquina muy simple que permite su reparación rapidamente. Menús en perfecto funcionamiento y fácil a usar.',
     mantenimiento: 'Limpieza con agua y jabón, después enjuagar (aclarar) bien con agua( ⚠️ No dejar ningún jabón ',
+    manualPdfUrl: '/bano-maria.pdf',
   },
   {
     id: 3,
@@ -103,6 +106,7 @@ const products: Product[] = [
     aplicaciones: 'Laboratorios de análisis clínicos, clínicas y consultorios médicos, laboratorios veterinarios. Centros de diagnóstico y control de calidad',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Electrónica y módulos ópticos sin fallas, botones y menús en perfecto funcionamiento. Se entrega con manual y cables.',
     mantenimiento: 'Diario : Debe limpiarse cualquier líquido volcado para evitar la acción corrosiva de cetonas sobre pinturas, perillas, y panel del instrumento.',
+    manualPdfUrl: '/espectrofotometro.pdf',
   },
   {
     id: 4,
@@ -127,6 +131,7 @@ const products: Product[] = [
     aplicaciones: 'Ensayos inmunoenzimáticos, Aplicaciones en investigación, Ideal para laboratorios clínicos, hospitales y centros de salud',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Electrónica y y el filtro de 450nm funcionan bien, botones y menús en perfecto funcionamiento. Se entrega con manual y cables.',
     mantenimiento: 'Limpieza con paño seco (no solventes o agua para limpiar)',
+    manualPdfUrl: '/elisa.pdf',
   },
   {
     id: 5,
@@ -148,6 +153,7 @@ const products: Product[] = [
     aplicaciones: '',
     estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. La par de carbones estan  nuevos. Se entrega con cables',
     mantenimiento: 'Limpiar regularmente el rotor y la cámara con paño húmedo y desinfectante neutro, Verificar el balance de los tubos antes de cada uso, Evitar el uso de tubos fisurados o con fugas, Revisar periódicamente el estado del cierre de tapa',
+    manualPdfUrl: '/micro-centrifuga.pdf',
   },
 ];
 
@@ -175,6 +181,57 @@ const getBadgeConfig = (badge: Product['badge']) => {
 const openWhatsApp = (product: Product) => {
   const message = `Hola, me interesa el producto: ${product.name} (${product.brand}) - ${formatPrice(product.price)}. ¿Podrían darme más información?`;
   window.open(`https://wa.me/5492612646209?text=${encodeURIComponent(message)}`, '_blank');
+};
+
+const downloadProductPDF = (product: Product) => {
+  if (product.manualPdfUrl) {
+    // Descargar PDF manual si existe
+    const link = document.createElement('a');
+    link.href = product.manualPdfUrl;
+    link.download = `${product.name.replace(/\s+/g, '_')}_manual.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } else {
+    // Generar PDF automáticamente si no hay manual
+    generateProductPDF(product);
+  }
+};
+
+const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, setUploadedPdf: (file: File | null) => void, toast: any) => {
+  const file = event.target.files?.[0];
+  if (file && file.type === 'application/pdf') {
+    setUploadedPdf(file);
+    toast({
+      title: 'PDF subido correctamente',
+      description: `Archivo "${file.name}" listo para asociar al producto.`,
+    });
+  } else {
+    toast({
+      title: 'Error en la subida',
+      description: 'Solo se permiten archivos PDF.',
+      variant: 'destructive',
+    });
+  }
+};
+
+const associatePdfToProduct = (uploadedPdf: File | null, product: Product, setUploadedPdf: (file: File | null) => void, toast: any) => {
+  if (!uploadedPdf || !product) return;
+
+  // En una aplicación real, aquí subirías el archivo a un servidor
+  // y actualizarías la base de datos con la nueva URL del PDF
+  const mockUrl = `/uploaded-${product.name.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+
+  toast({
+    title: 'PDF asociado al producto',
+    description: `El archivo "${uploadedPdf.name}" ha sido asociado exitosamente.`,
+  });
+
+  // Limpiar el archivo subido
+  setUploadedPdf(null);
+  // Resetear el input file
+  const fileInput = document.getElementById('pdf-upload') as HTMLInputElement;
+  if (fileInput) fileInput.value = '';
 };
 
 const generateProductPDF = (product: Product) => {
@@ -312,7 +369,8 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+  const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
+
   const product = products.find(p => p.id === Number(id));
 
   // ← NUEVO: fuerza scroll al top al cargar/cambiar el producto
@@ -491,10 +549,11 @@ export default function ProductDetail() {
                     variant="outline"
                     size="lg"
                     className="flex-1 text-base md:text-lg"
-                    onClick={() => generateProductPDF(product)}
+                    onClick={() => downloadProductPDF(product)}
                   >
                     <Download className="w-5 h-5 mr-2" />
                     Descargar Ficha Técnica
+                    
                   </Button>
                 </div>
               </div>
@@ -572,6 +631,57 @@ export default function ProductDetail() {
                   </p>
                 </div>
               )}
+            </div>
+
+            {/* Sección de gestión de PDFs - Solo visible para administradores */}
+            <div className="mt-12 p-6 bg-muted/30 border border-border rounded-lg">
+              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Gestión de Documentos PDF
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Sube un PDF manual específico para este producto. Si existe un PDF manual, será priorizado sobre la ficha técnica generada automáticamente.
+              </p>
+
+              {product?.manualPdfUrl && (
+                <div className="mb-4 p-3 bg-accent/10 border border-accent/20 rounded">
+                  <p className="text-sm text-accent-foreground">
+                    <strong>PDF actual:</strong> {product.manualPdfUrl}
+                  </p>
+                </div>
+              )}
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <input
+                    id="pdf-upload"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => handleFileUpload(e, setUploadedPdf, toast)}
+                    className="hidden"
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() => document.getElementById('pdf-upload')?.click()}
+                    className="w-full"
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    {uploadedPdf ? `Seleccionado: ${uploadedPdf.name}` : 'Seleccionar PDF'}
+                  </Button>
+                </div>
+                <Button
+                  onClick={() => associatePdfToProduct(uploadedPdf, product, setUploadedPdf, toast)}
+                  disabled={!uploadedPdf}
+                  className="flex-1"
+                >
+                  <FileText className="w-4 h-4 mr-2" />
+                  Asociar PDF al Producto
+                </Button>
+              </div>
+
+              <p className="text-xs text-muted-foreground mt-3">
+                Nota: Esta funcionalidad es para administradores. En producción, los PDFs se subirían a un servidor y se actualizaría la base de datos.
+              </p>
             </div>
           </div>
         </main>

@@ -27,7 +27,7 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: 'Analisador de electrolitos',
+    name: 'Analizador de electrolitos',
     brand: 'Diestro - 103AP V4',
     price: 2800000,
     // originalPrice: 580000,
