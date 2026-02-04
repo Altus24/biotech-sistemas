@@ -1,29 +1,46 @@
 import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const footerLinks = {
   productos: [
-    { label: 'Centrífugas', href: '#' },
-    { label: 'Microscopios', href: '#' },
-    { label: 'Autoclaves', href: '#' },
-    { label: 'Espectrofotómetros', href: '#' },
-    { label: 'Balanzas', href: '#' },
+    { label: 'Analizador de electrolitos', sectionId: 'catalogo' },
+    { label: 'Baño Maria', sectionId: 'catalogo' },
+    { label: 'Espectrofotómetro', sectionId: 'catalogo' },
+    { label: 'Lector ELISA', sectionId: 'catalogo' },
+    { label: 'Micro-centrifuga', sectionId: 'catalogo' },
   ],
   servicios: [
-    { label: 'Mantenimiento', href: '#servicio' },
-    { label: 'Reparación', href: '#servicio' },
-    { label: 'Calibración', href: '#servicio' },
-    { label: 'Instalación', href: '#servicio' },
+    { label: 'Mantenimiento', sectionId: 'servicio' },
+    { label: 'Reparación', sectionId: 'servicio' },
+    { label: 'Calibración', sectionId: 'servicio' },
+    { label: 'Instalación', sectionId: 'servicio' },
   ],
   empresa: [
-    { label: 'Quiénes Somos', href: '#nosotros' },
-    { label: 'Catálogo', href: '#catalogo' },
-    { label: 'Contacto', href: '#contacto' },
+    { label: 'Quiénes Somos', sectionId: 'nosotros' },
+    { label: 'Catálogo', sectionId: 'catalogo' },
+    { label: 'Contacto', sectionId: 'contacto' },
   ],
 };
 
 export function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const navigateToSection = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // Si estamos en la página principal, hacer scroll directo
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // Si estamos en otra página, navegar a home y hacer scroll
+      navigate('/', { state: { scrollTo: sectionId } });
+    }
   };
 
   return (
@@ -64,12 +81,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.productos.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-background transition-colors"
+                  <button
+                    onClick={() => navigateToSection(link.sectionId)}
+                    className="text-background/70 hover:text-background transition-colors text-left"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -81,12 +98,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.servicios.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-background transition-colors"
+                  <button
+                    onClick={() => navigateToSection(link.sectionId)}
+                    className="text-background/70 hover:text-background transition-colors text-left"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -98,12 +115,12 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.empresa.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-background/70 hover:text-background transition-colors"
+                  <button
+                    onClick={() => navigateToSection(link.sectionId)}
+                    className="text-background/70 hover:text-background transition-colors text-left"
                   >
                     {link.label}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>

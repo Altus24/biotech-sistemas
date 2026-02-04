@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Navbar } from '@/components/Navbar';
 import { SkipLinks } from '@/components/SkipLinks';
@@ -9,6 +11,21 @@ import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 
 const Index = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Si hay un estado de scroll en la navegación, hacer scroll a esa sección
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        // Pequeño delay para asegurar que la página se haya renderizado completamente
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
+
   return (
     <>
       <Helmet>

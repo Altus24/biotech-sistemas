@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ArrowLeft, Check, Download, Upload, FileText } from 'lucide-react';
+import { ShoppingCart, ArrowLeft, Check, Download } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -198,41 +198,6 @@ const downloadProductPDF = (product: Product) => {
   }
 };
 
-const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, setUploadedPdf: (file: File | null) => void, toast: any) => {
-  const file = event.target.files?.[0];
-  if (file && file.type === 'application/pdf') {
-    setUploadedPdf(file);
-    toast({
-      title: 'PDF subido correctamente',
-      description: `Archivo "${file.name}" listo para asociar al producto.`,
-    });
-  } else {
-    toast({
-      title: 'Error en la subida',
-      description: 'Solo se permiten archivos PDF.',
-      variant: 'destructive',
-    });
-  }
-};
-
-const associatePdfToProduct = (uploadedPdf: File | null, product: Product, setUploadedPdf: (file: File | null) => void, toast: any) => {
-  if (!uploadedPdf || !product) return;
-
-  // En una aplicación real, aquí subirías el archivo a un servidor
-  // y actualizarías la base de datos con la nueva URL del PDF
-  const mockUrl = `/uploaded-${product.name.replace(/\s+/g, '-').toLowerCase()}.pdf`;
-
-  toast({
-    title: 'PDF asociado al producto',
-    description: `El archivo "${uploadedPdf.name}" ha sido asociado exitosamente.`,
-  });
-
-  // Limpiar el archivo subido
-  setUploadedPdf(null);
-  // Resetear el input file
-  const fileInput = document.getElementById('pdf-upload') as HTMLInputElement;
-  if (fileInput) fileInput.value = '';
-};
 
 const generateProductPDF = (product: Product) => {
   const doc = new jsPDF();
@@ -369,7 +334,6 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
 
   const product = products.find(p => p.id === Number(id));
 
@@ -631,57 +595,6 @@ export default function ProductDetail() {
                   </p>
                 </div>
               )}
-            </div>
-
-            {/* Sección de gestión de PDFs - Solo visible para administradores */}
-            <div className="mt-12 p-6 bg-muted/30 border border-border rounded-lg">
-              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5" />
-                Gestión de Documentos PDF
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Sube un PDF manual específico para este producto. Si existe un PDF manual, será priorizado sobre la ficha técnica generada automáticamente.
-              </p>
-
-              {product?.manualPdfUrl && (
-                <div className="mb-4 p-3 bg-accent/10 border border-accent/20 rounded">
-                  <p className="text-sm text-accent-foreground">
-                    <strong>PDF actual:</strong> {product.manualPdfUrl}
-                  </p>
-                </div>
-              )}
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <input
-                    id="pdf-upload"
-                    type="file"
-                    accept=".pdf"
-                    onChange={(e) => handleFileUpload(e, setUploadedPdf, toast)}
-                    className="hidden"
-                  />
-                  <Button
-                    variant="outline"
-                    onClick={() => document.getElementById('pdf-upload')?.click()}
-                    className="w-full"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    {uploadedPdf ? `Seleccionado: ${uploadedPdf.name}` : 'Seleccionar PDF'}
-                  </Button>
-                </div>
-                <Button
-                  onClick={() => associatePdfToProduct(uploadedPdf, product, setUploadedPdf, toast)}
-                  disabled={!uploadedPdf}
-                  className="flex-1"
-                >
-                  <FileText className="w-4 h-4 mr-2" />
-                  Asociar PDF al Producto
-                </Button>
-              </div>
-
-              <p className="text-xs text-muted-foreground mt-3">
-                Nota: Esta funcionalidad es para administradores. En producción, los PDFs se subirían a un servidor y se actualizaría la base de datos.
-              </p>
             </div>
           </div>
         </main>
