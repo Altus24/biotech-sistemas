@@ -20,8 +20,8 @@ export function AboutUs() {
               <div className="p-4 md:p-6 rounded-xl bg-card border border-border/50 text-center">
                 <h4 className="font-bold text-foreground mb-3 text-base md:text-lg">Nuestra Misión</h4>
                 <p className="text-sm md:text-base text-muted-foreground">
-                  Biotech Sistemas es una empresa mendocina de tamaño humano que propone un servicio tecnico
-                  (reparación y mantenimiento de maquinas), ventas de maquinas (centrifuga, espectrofotometro, ….)
+                  Biotech Sistemas es una empresa mendocina de tamaño humano que propone un servicio técnico
+                  (reparación y mantenimiento de máquinas), ventas de máquinas (centrífuga, espectrofotómetro, ….)
                 </p>
               </div>
               <div className="p-4 md:p-6 rounded-xl bg-card border border-border/50 text-center">

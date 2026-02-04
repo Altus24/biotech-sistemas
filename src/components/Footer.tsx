@@ -7,7 +7,7 @@ const footerLinks = {
     { label: 'Baño Maria', sectionId: 'catalogo' },
     { label: 'Espectrofotómetro', sectionId: 'catalogo' },
     { label: 'Lector ELISA', sectionId: 'catalogo' },
-    { label: 'Micro-centrifuga', sectionId: 'catalogo' },
+    { label: 'Micro-centrífuga', sectionId: 'catalogo' },
   ],
   servicios: [
     { label: 'Mantenimiento', sectionId: 'servicio' },

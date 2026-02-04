@@ -80,7 +80,7 @@ const products: Product[] = [
     warranty: '12 meses',
     // conectividad: '',
     aplicaciones: 'Ideal para incubación controlada de muestras, Calentamiento, disolución y descongelación suave, Aplicaciones químicas (control térmico de reacciones químicas, y calentamiento uniforme, para extracciones, titulaciones y pruebas de estabilidad)',
-    estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Maquina muy simple que permite su reparación rapidamente. Menús en perfecto funcionamiento y fácil a usar.',
+    estadoDelEquipo: 'Equipo en buen estado operativo, verificado y calibrado recientemente. Máquina muy simple que permite su reparación rapidamente. Menús en perfecto funcionamiento y fácil a usar.',
     mantenimiento: 'Limpieza con agua y jabón, después enjuagar (aclarar) bien con agua( ⚠️ No dejar ningún jabón ',
     manualPdfUrl: '/bano-maria.pdf',
   },
@@ -135,7 +135,7 @@ const products: Product[] = [
   },
   {
     id: 5,
-    name: 'Micro-centrifuga para microhematocritos',
+    name: 'Micro-ífuga para microhematocritos',
     brand: 'Gelec G112',
     price: 1250000,
     image: microCentrifugaImg,
