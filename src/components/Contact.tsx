@@ -29,8 +29,20 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/5492612646209' },
-  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com/biotech_sistemas' },
+  { 
+    icon: MessageCircle, 
+    label: 'WhatsApp', 
+    href: 'https://wa.me/5492612646209',
+    // Degradado de verde lima a verde esmeralda
+    colorClasses: 'bg-gradient-to-tr from-[#25D366] to-[#128C7E] hover:brightness-90 text-white border-transparent'
+  },
+  { 
+    icon: Instagram, 
+    label: 'Instagram', 
+    href: 'https://instagram.com/biotech_sistemas',
+    // Degradado oficial de Instagram
+    colorClasses: 'bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] hover:brightness-90 text-white border-transparent'
+  },
 ];
 
 export function Contact() {
@@ -124,7 +136,7 @@ export function Contact() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-200"
+                    className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md ${social.colorClasses}`}
                     aria-label={social.label}
                   >
                     <social.icon className="w-4 h-4 md:w-5 md:h-5" />

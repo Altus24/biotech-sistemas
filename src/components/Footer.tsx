@@ -1,5 +1,6 @@
 import { MapPin, Phone, Mail, ArrowUp } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logoImg from '@/assets/logo.jpg';
 
 const footerLinks = {
   productos: [
@@ -51,9 +52,11 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">L</span>
-              </div>
+              <img
+                src={logoImg}
+                alt="Biotech Sistemas Logo"
+                className="w-16 h-16 object-contain"
+              />
               <span className="text-xl font-bold">Biotech Sistemas</span>
             </div>
             <p className="text-background/70 mb-6 max-w-sm">
