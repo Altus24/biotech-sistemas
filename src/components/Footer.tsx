@@ -134,9 +134,20 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-background/10">
         <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-background/50 text-sm text-center md:text-left">
-            © {new Date().getFullYear()} Biotech Sistemas. Todos los derechos reservados.
-          </p>
+          <div className="text-background/50 text-sm text-center md:text-left">
+            <p>© {new Date().getFullYear()} Biotech Sistemas. Todos los derechos reservados.</p>
+            <p className="mt-1">
+              Desarrollado por{' '}
+              <a
+                href="https://aldana-ingrassia.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-background/70 text-success hover:text-primary-glow underline transition-colors"
+              >
+                Altus
+              </a>
+            </p>
+          </div>
           <button
             onClick={scrollToTop}
             className="w-10 h-10 rounded-lg bg-background/10 flex items-center justify-center hover:bg-background/20 transition-colors"
