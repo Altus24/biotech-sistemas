@@ -135,7 +135,7 @@ const products: Product[] = [
   },
   {
     id: 5,
-    name: 'Micro-ífuga para microhematocritos',
+    name: 'Microcentrífuga para microhematocritos',
     brand: 'Gelec G112',
     price: 1250000,
     image: microCentrifugaImg,
