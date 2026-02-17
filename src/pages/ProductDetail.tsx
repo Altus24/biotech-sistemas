@@ -334,7 +334,6 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-
   const product = products.find(p => p.id === Number(id));
 
   // ← NUEVO: fuerza scroll al top al cargar/cambiar el producto

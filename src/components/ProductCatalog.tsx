@@ -118,6 +118,12 @@ export function ProductCatalog() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const goToProductDetail = (productId: number) => {
+    // Aseguramos que al navegar al detalle siempre se muestre desde arriba
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    navigate(`/producto/${productId}`);
+  };
+
   return (
     <section id="catalogo" className="py-16 md:py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -178,7 +184,7 @@ export function ProductCatalog() {
                       className="mt-4 md:mt-6 text-xs md:text-sm"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/producto/${product.id}`);
+                        goToProductDetail(product.id);
                       }}
                     >
                       <Eye className="w-3 h-3 md:w-4 md:h-4 mr-2" />
@@ -226,7 +232,7 @@ export function ProductCatalog() {
                       variant="outline" 
                       size="sm" 
                       className="flex-1 text-xs md:text-sm" 
-                      onClick={() => navigate(`/producto/${product.id}`)}
+                      onClick={() => goToProductDetail(product.id)}
                     >
                       <Eye className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       Ver más
