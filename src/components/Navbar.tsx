@@ -18,8 +18,9 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isProductPage = location.pathname.startsWith('/producto/');
-  const isHomePage = location.pathname === '/'; // ← Detectamos si estamos en la home
+  const isHomePage = location.pathname === '/';
+  // Si no estamos en la home (admin, 404, producto/…), los #anchors no existen: navegar a / y luego hacer scroll
+  const needsNavigateToHome = !isHomePage;
 
   // Forzamos el estilo "scrolled" (opaco) en páginas que no sean la home
   const forceOpaque = !isHomePage;
@@ -34,7 +35,7 @@ export function Navbar() {
   }, []);
 
   const handleNavClick = (href: string) => {
-    if (isProductPage) {
+    if (needsNavigateToHome) {
       navigate('/');
       setTimeout(() => {
         const element = document.getElementById(href.substring(1));
