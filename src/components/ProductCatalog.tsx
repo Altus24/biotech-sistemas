@@ -4,76 +4,9 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, Info, Tag, Sparkles, X, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { getAllProducts, type Product } from '@/lib/productStore';
 
-// Import product images
-import centrifugaImg from '@/assets/products/analisador-de-electrolitos.webp';
-import banoMariaImg from '@/assets/products/bano-maria.webp';
-import espectrofotometroImg from '@/assets/products/espectrofotometro-1600DR.webp';
-import elisaImg from '@/assets/products/lector-elisa-950.webp';
-import microCentrifugaImg from '@/assets/products/micro-centrifuga.webp';
-
-
-interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  price: number;
-  // originalPrice?: number;
-  image: string;
-  badge?: 'offer' | 'new' | 'used';
-  features: string[];
-}
-
-const products: Product[] = [
-  {
-    id: 1,
-    name: 'Analizador de electrolitos',
-    brand: 'Diestro - 103AP V4',
-    price: 2800000,
-    // originalPrice: 580000,
-    image: centrifugaImg,
-    badge: 'used',
-    features: ['Dimensiones : 27cm de alto, 16cm de ancho y 21cm de profundidad', 'Temperatura y humedad de uso : Entre 15º - 30º C, Menos de 80%', 'Pesa : 3,2Kg', 'Voltaje de entrada : 100 - 240 V, frecuencia : 50 / 60 Hz, Amperaje 0.8A'],
-  },
-  {
-    id: 2,
-    name: 'Baño Maria',
-    brand: 'Donelab - DL 326',
-    price: 390000,
-    image: banoMariaImg,
-    badge: 'used',
-    features: ['Capacidad: 32 tubos de ensayo (10mL) y 40 tubos de Khan (6mL)', 'Temperatura maxima: 70°C', 'Capacidad: 4L','Dimensiones: Alto:22,6cm, Ancho: 21,6cm, Profundidad:  35,2cm', 'Peso: 2,7Kg'],
-  },
-  {
-    id: 3,
-    name: 'Espectrofotómetro',
-    brand: 'Metrolab 1600 DR',
-    price: 2400000,
-    image: espectrofotometroImg,
-    badge: 'used',
-    features: ['Dimensiones: Alto: 17cm, Ancho, 32cm, Profundidad 38cm', 'Peso: 6Kg', 'Voltaje: 150V','Amperaje: 10A'],
-  },
-  {
-    id: 4,
-    name: 'Lector ELISA',
-    brand: 'Metrolab 950',
-    price: 250000,
-    // originalPrice: 3200000,
-    image: elisaImg,
-    badge: 'used',
-    features: ['Capacidad: Tira de 8 o 12 pocillos', 'Capacidad máxima de cada pocillo: 300µL', 'Filtro de 450nm (⚠️ El unico que tiene ese aparato en venta, se puede pedir otro ⚠️)', 'Dimensiones : Alto:  4,5cm, Ancho:  15cm, Profundidad: 18cm','Temperatura de uso : 15-35°C' , 'Peso: 0.5Kg'],
-  },
-  {
-    id: 5,
-    name: 'Microcentrífuga para microhematocritos',
-    brand: 'Gelec G112',
-    price: 1250000,
-    image: microCentrifugaImg,
-    badge: 'used',
-    features: ['Capacidad: 24 tubos', 'Capacidad máxima de cada tubo 1mL', 'Valocidad: 12000rpm (no es variable)', 'Dimensiones: Alto: 21,9cm, Ancho: 22,8cm, Profundidad: 27,5cm', 'Peso: 10Kg', 'Timer: 1-15 minutos máximo de agitacíon', 'Frecuencia: 50Hz', 'Voltaje: 250V','Amperaje: 10A'],
-  },
- 
-];
+// El catálogo toma los productos desde el store unificado (base + admin)
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('es-AR', {
@@ -105,6 +38,7 @@ export function ProductCatalog() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const products = getAllProducts();
 
   const handleConsultar = (product: Product) => {
     openWhatsApp(product);

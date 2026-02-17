@@ -18,7 +18,7 @@ const NotFound = () => {
   return (
     <>
       <Navbar />
-      <main className="min-h-[60vh] flex items-center justify-center bg-muted/40">
+      <main className="min-h-[60vh] flex items-center justify-center bg-muted/40 pt-24">
         <section className="container mx-auto px-4 py-16">
           <div className="mx-auto max-w-2xl rounded-3xl bg-background shadow-xl border border-border/60 p-8 md:p-10 text-center">
             <div className="inline-flex items-center justify-center rounded-full bg-primary/10 text-primary mb-6 p-3">

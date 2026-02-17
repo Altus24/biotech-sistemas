@@ -57,14 +57,14 @@ export function Navbar() {
       }`}
     >
       {/* Main nav */}
-      <nav className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
+      <nav className="container mx-auto px-4 py-2 md:py-3 flex items-center justify-between">
         <button onClick={() => handleNavClick('#inicio')} className="flex items-center gap-2 md:gap-3">
           <img
             src={logoImg}
             alt="Biotech Sistemas Logo"
-            className="w-12 h-12 md:w-20 md:h-20 lg:w-28 lg:h-28 object-contain"
+            className="w-9 h-9 md:w-14 md:h-14 lg:w-16 lg:h-16 object-contain"
           />
-          <span className={`text-lg md:text-xl font-bold transition-colors ${
+          <span className={`text-base md:text-lg font-bold transition-colors ${
             effectiveScrolled ? 'text-foreground' : 'text-primary-foreground'
           }`}>
             Biotech Sistemas
