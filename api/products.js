@@ -107,6 +107,131 @@ export default async function handler(req, res) {
       return;
     }
 
+    // PUT /api/products/:id  (actualizar o crear override)
+    if (req.method === 'PUT') {
+      if (!checkAuth(req)) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const url = req.url || '';
+      const match = url.match(/\/api\/products\/(\d+)/);
+      const id = match ? parseInt(match[1], 10) : NaN;
+      if (!match || Number.isNaN(id)) {
+        res.status(400).json({ error: 'Invalid id' });
+        return;
+      }
+
+      const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
+      const row = {
+        name: body.name != null ? String(body.name) : undefined,
+        brand: body.brand != null ? String(body.brand) : undefined,
+        price: body.price != null ? Number(body.price) : undefined,
+        image: body.image != null ? String(body.image) : undefined,
+        badge: body.badge != null ? (body.badge === ' ' || body.badge === '' ? ' ' : body.badge) : undefined,
+        features: body.features != null && Array.isArray(body.features) ? body.features : undefined,
+        description: body.description != null ? body.description : undefined,
+        specifications:
+          body.specifications != null && typeof body.specifications === 'object' && !Array.isArray(body.specifications)
+            ? body.specifications
+            : undefined,
+        warranty: body.warranty != null ? body.warranty : undefined,
+        conectividad: body.conectividad != null ? body.conectividad : undefined,
+        aplicaciones: body.aplicaciones != null ? body.aplicaciones : undefined,
+        estado_del_equipo: body.estadoDelEquipo != null ? body.estadoDelEquipo : undefined,
+        mantenimiento: body.mantenimiento != null ? body.mantenimiento : undefined,
+        manual_pdf_url: body.manualPdfUrl != null ? body.manualPdfUrl : undefined,
+        hidden: body.hidden != null ? !!body.hidden : undefined,
+      };
+      const clean = Object.fromEntries(Object.entries(row).filter(([, v]) => v !== undefined));
+
+      const supabase = getSupabase();
+      const { data: existing } = await supabase.from(TABLE).select('*').eq('id', id).single();
+      if (existing) {
+        const { data: updated, error } = await supabase
+          .from(TABLE)
+          .update(clean)
+          .eq('id', id)
+          .select()
+          .single();
+        if (error) throw error;
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json(mapRowToProduct(updated));
+        return;
+      }
+
+      const insertRow = {
+        id,
+        name: clean.name ?? '',
+        brand: clean.brand ?? '',
+        price: clean.price ?? 0,
+        image: clean.image ?? '',
+        badge: clean.badge ?? ' ',
+        features: clean.features ?? [],
+        description: clean.description ?? null,
+        specifications: clean.specifications ?? {},
+        warranty: clean.warranty ?? null,
+        conectividad: clean.conectividad ?? null,
+        aplicaciones: clean.aplicaciones ?? null,
+        estado_del_equipo: clean.estado_del_equipo ?? null,
+        mantenimiento: clean.mantenimiento ?? null,
+        manual_pdf_url: clean.manual_pdf_url ?? null,
+        hidden: clean.hidden ?? false,
+      };
+      const { data: inserted, error } = await supabase.from(TABLE).insert(insertRow).select().single();
+      if (error) throw error;
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(mapRowToProduct(inserted));
+      return;
+    }
+
+    // DELETE /api/products/:id
+    if (req.method === 'DELETE') {
+      if (!checkAuth(req)) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const url = req.url || '';
+      const match = url.match(/\/api\/products\/(\d+)/);
+      const id = match ? parseInt(match[1], 10) : NaN;
+      if (!match || Number.isNaN(id)) {
+        res.status(400).json({ error: 'Invalid id' });
+        return;
+      }
+
+      const supabase = getSupabase();
+      const { data: existing } = await supabase.from(TABLE).select('id').eq('id', id).single();
+      if (existing) {
+        const { error } = await supabase.from(TABLE).delete().eq('id', id);
+        if (error) throw error;
+        res.status(204).end();
+        return;
+      }
+
+      const { error } = await supabase.from(TABLE).insert({
+        id,
+        name: '',
+        brand: '',
+        price: 0,
+        image: '',
+        badge: ' ',
+        features: [],
+        description: null,
+        specifications: {},
+        warranty: null,
+        conectividad: null,
+        aplicaciones: null,
+        estado_del_equipo: null,
+        mantenimiento: null,
+        manual_pdf_url: null,
+        hidden: true,
+      });
+      if (error) throw error;
+      res.status(204).end();
+      return;
+    }
+
     res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     console.error(err);
