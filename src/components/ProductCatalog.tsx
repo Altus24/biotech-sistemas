@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, Info, Tag, Sparkles, X, Eye } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { getAllProducts, type Product } from '@/lib/productStore';
+import { useProducts } from '@/contexts/ProductsContext';
+import { type Product } from '@/lib/productStore';
 
 // El catálogo toma los productos desde el store unificado (base + admin)
 
@@ -37,8 +38,8 @@ const openWhatsApp = (product: Product) => {
 export function ProductCatalog() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { products } = useProducts();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const products = getAllProducts();
 
   const handleConsultar = (product: Product) => {
     openWhatsApp(product);

@@ -7,7 +7,8 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
-import { getAllProducts, type Product } from '@/lib/productStore';
+import { useProducts } from '@/contexts/ProductsContext';
+import { type Product } from '@/lib/productStore';
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('es-AR', {
@@ -186,7 +187,7 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const products = getAllProducts();
+  const { products } = useProducts();
   const product = products.find(p => p.id === Number(id));
 
   // ← NUEVO: fuerza scroll al top al cargar/cambiar el producto

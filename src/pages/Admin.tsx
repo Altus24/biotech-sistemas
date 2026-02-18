@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Pencil, Trash2 } from 'lucide-react';
 import {
-  getAllProducts,
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductApi,
+  updateProductApi,
+  deleteProductApi,
   type Product,
 } from '@/lib/productStore';
+import { useProducts } from '@/contexts/ProductsContext';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'biotech-admin';
 
@@ -35,9 +38,9 @@ type FeatureField = {
 
 export default function Admin() {
   const { toast } = useToast();
+  const { products, refetch, useApi } = useProducts();
   const [isAuthed, setIsAuthed] = useState(false);
   const [password, setPassword] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [featureFields, setFeatureFields] = useState<FeatureField[]>([{
     id: crypto.randomUUID(),
@@ -74,10 +77,7 @@ export default function Admin() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const token = window.localStorage.getItem('biotech-admin-authed');
-    if (token === 'true') {
-      setIsAuthed(true);
-      setProducts(getAllProducts());
-    }
+    if (token === 'true') setIsAuthed(true);
   }, []);
 
   const handleLogin = (e: FormEvent) => {
@@ -87,7 +87,7 @@ export default function Admin() {
       if (typeof window !== 'undefined') {
         window.localStorage.setItem('biotech-admin-authed', 'true');
       }
-      setProducts(getAllProducts());
+      refetch();
     } else {
       alert('Contraseña incorrecta');
     }
@@ -120,7 +120,7 @@ export default function Admin() {
     }]);
   };
 
-  const handleSubmitProduct = (e: FormEvent) => {
+  const handleSubmitProduct = async (e: FormEvent) => {
     e.preventDefault();
 
     // Procesar características (una por campo)
@@ -184,16 +184,41 @@ export default function Admin() {
         : undefined,
     };
 
+    const pwd = ADMIN_PASSWORD;
     if (editingId !== null) {
-      updateProduct(editingId, baseProduct);
-      setProducts(getAllProducts());
+      if (useApi) {
+        const updated = await updateProductApi(editingId, baseProduct, pwd);
+        if (updated) {
+          await refetch();
+        } else {
+          toast({ title: 'Error', description: 'No se pudo actualizar el producto.', variant: 'destructive' });
+          return;
+        }
+      } else {
+        updateProduct(editingId, baseProduct);
+        await refetch();
+      }
     } else {
-      const created = createProduct(baseProduct);
-      setProducts(getAllProducts());
-      toast({
-        title: 'Producto creado',
-        description: `Se creó "${created.name}" correctamente.`,
-      });
+      if (useApi) {
+        const created = await createProductApi(baseProduct, pwd);
+        if (created) {
+          await refetch();
+          toast({
+            title: 'Producto creado',
+            description: `Se creó "${created.name}" correctamente.`,
+          });
+        } else {
+          toast({ title: 'Error', description: 'No se pudo crear el producto.', variant: 'destructive' });
+          return;
+        }
+      } else {
+        const created = createProduct(baseProduct);
+        await refetch();
+        toast({
+          title: 'Producto creado',
+          description: `Se creó "${created.name}" correctamente.`,
+        });
+      }
     }
 
     resetForm();
@@ -277,13 +302,17 @@ export default function Admin() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (!confirm('¿Eliminar este producto?')) return;
-    deleteProduct(id);
-    setProducts(getAllProducts());
-    if (editingId === id) {
-      resetForm();
+    if (useApi) {
+      const ok = await deleteProductApi(id, ADMIN_PASSWORD);
+      if (ok) await refetch();
+      else toast({ title: 'Error', description: 'No se pudo eliminar.', variant: 'destructive' });
+    } else {
+      deleteProduct(id);
+      await refetch();
     }
+    if (editingId === id) resetForm();
   };
 
   const addSpecField = () => {

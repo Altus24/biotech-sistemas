@@ -218,6 +218,87 @@ export const baseProducts: Product[] = [
 
 const STORAGE_KEY = 'biotech-admin-products';
 
+const API_BASE = typeof window !== 'undefined' ? '' : ''; // mismo origen: /api
+
+/** Une productos base con los guardados (overrides + nuevos). Usado por el provider con datos del API. */
+export function mergeStoredWithBase(stored: Product[]): Product[] {
+  const map = new Map<number, Product>();
+  for (const p of baseProducts) map.set(p.id, p);
+  for (const p of stored) map.set(p.id, p);
+  return Array.from(map.values())
+    .filter((p) => !p.hidden)
+    .sort((a, b) => a.id - b.id);
+}
+
+/** Devuelve los productos "stored" del API. Si falla (ej. sin backend), devuelve null. */
+export async function fetchStoredFromApi(): Promise<Product[] | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/products`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data)) return null;
+    return data as Product[];
+  } catch {
+    return null;
+  }
+}
+
+/** Crea producto en el API. Requiere contraseña de admin. */
+export async function createProductApi(
+  data: Omit<Product, 'id'>,
+  adminPassword: string,
+): Promise<Product | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/products`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminPassword}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as Product;
+  } catch {
+    return null;
+  }
+}
+
+/** Actualiza producto en el API. */
+export async function updateProductApi(
+  id: number,
+  data: Partial<Omit<Product, 'id'>>,
+  adminPassword: string,
+): Promise<Product | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/products/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminPassword}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as Product;
+  } catch {
+    return null;
+  }
+}
+
+/** Elimina (o oculta) producto en el API. */
+export async function deleteProductApi(id: number, adminPassword: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${API_BASE}/api/products/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${adminPassword}` },
+    });
+    return res.status === 204 || res.ok;
+  } catch {
+    return false;
+  }
+}
+
 function readStored(): Product[] {
   if (typeof window === 'undefined') return [];
   try {
