@@ -271,7 +271,7 @@ export async function updateProductApi(
   adminPassword: string,
 ): Promise<Product | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/products/${id}`, {
+    const res = await fetch(`${API_BASE}/api/products?id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -289,7 +289,7 @@ export async function updateProductApi(
 /** Elimina (o oculta) producto en el API. */
 export async function deleteProductApi(id: number, adminPassword: string): Promise<boolean> {
   try {
-    const res = await fetch(`${API_BASE}/api/products/${id}`, {
+    const res = await fetch(`${API_BASE}/api/products?id=${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${adminPassword}` },
     });

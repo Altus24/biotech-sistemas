@@ -24,6 +24,17 @@ function setCors(res, req) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 }
 
+function getQueryId(req) {
+  try {
+    const url = req.url || '';
+    const q = url.includes('?') ? url.slice(url.indexOf('?')) : '';
+    const params = new URLSearchParams(q);
+    return params.get('id');
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   setCors(res, req);
 
@@ -107,17 +118,16 @@ export default async function handler(req, res) {
       return;
     }
 
-    // PUT /api/products/:id  (actualizar o crear override)
+    // PUT /api/products?id=  (actualizar o crear override)
     if (req.method === 'PUT') {
       if (!checkAuth(req)) {
         res.status(401).json({ error: 'Unauthorized' });
         return;
       }
 
-      const url = req.url || '';
-      const match = url.match(/\/api\/products\/(\d+)/);
-      const id = match ? parseInt(match[1], 10) : NaN;
-      if (!match || Number.isNaN(id)) {
+      const idParam = getQueryId(req);
+      const id = idParam != null ? parseInt(idParam, 10) : NaN;
+      if (idParam == null || Number.isNaN(id)) {
         res.status(400).json({ error: 'Invalid id' });
         return;
       }
@@ -185,17 +195,16 @@ export default async function handler(req, res) {
       return;
     }
 
-    // DELETE /api/products/:id
+    // DELETE /api/products?id=
     if (req.method === 'DELETE') {
       if (!checkAuth(req)) {
         res.status(401).json({ error: 'Unauthorized' });
         return;
       }
 
-      const url = req.url || '';
-      const match = url.match(/\/api\/products\/(\d+)/);
-      const id = match ? parseInt(match[1], 10) : NaN;
-      if (!match || Number.isNaN(id)) {
+      const idParam = getQueryId(req);
+      const id = idParam != null ? parseInt(idParam, 10) : NaN;
+      if (idParam == null || Number.isNaN(id)) {
         res.status(400).json({ error: 'Invalid id' });
         return;
       }
