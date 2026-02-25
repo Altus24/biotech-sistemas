@@ -82,7 +82,7 @@ const Index = () => {
             },
             "sameAs": [
               "https://wa.me/5492612646209",
-              "https://instagram.com/biotech_sistemas"
+              "https://www.instagram.com/biotech_sistemas23"
             ]
           })}
         </script>
