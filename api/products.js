@@ -49,7 +49,8 @@ export default async function handler(req, res) {
       const { data, error } = await supabase.from(TABLE).select('*').order('id', { ascending: true });
       if (error) throw error;
       res.setHeader('Content-Type', 'application/json');
-      res.status(200).json(data || []);
+      const products = (data || []).map((row) => mapRowToProduct(row));
+      res.status(200).json(products);
       return;
     }
 
