@@ -167,7 +167,8 @@ export default function Admin() {
     for (const spec of specFields) {
       const key = spec.label.trim();
       const value = spec.value.trim();
-      if (!key || !value) continue;
+      // Solo la etiqueta es obligatoria; el valor puede quedar vacío
+      if (!key) continue;
       specifications[key] = value;
     }
 
@@ -395,11 +396,6 @@ export default function Admin() {
                 <Button type="submit" className="w-full">
                   Entrar
                 </Button>
-                <p className="text-xs text-muted-foreground mt-2">
-                  (Contraseña por defecto: <code>biotech-admin</code>. Puedes
-                  cambiarla definiendo la variable{' '}
-                  <code>VITE_ADMIN_PASSWORD</code>.)
-                </p>
               </form>
             </section>
           ) : (

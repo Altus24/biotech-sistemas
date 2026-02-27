@@ -40,7 +40,7 @@ const socialLinks = [
     icon: Instagram, 
     label: 'Instagram', 
     href: 'https://www.instagram.com/biotech_sistemas23',
-    // Degradado oficial de Instagram
+    // Degradado oficial de 
     colorClasses: 'bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] hover:brightness-90 text-white border-transparent'
   },
 ];
